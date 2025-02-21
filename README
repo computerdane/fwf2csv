@@ -1,0 +1,19 @@
+Usage: fwf2csv [OPTIONS] [file]
+
+Convert a fixed-width formatted file to CSV. If file is -, the program will
+read input from stdin.
+
+OPTIONS
+--schema / -s
+	Provide a schema as text
+
+--schema-file / -S
+	Provide a file containing a schema
+
+--version / -v
+	Output the current version
+
+SCHEMA
+The schema file must contain a column definition on each line of the form
+"N COL", where N is the last character (exclusive) of the substring in
+the fixed-width data representing a column, and COL is the column name.

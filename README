@@ -4,6 +4,9 @@ Convert a fixed-width formatted file to CSV. If file is -, the program will
 read input from stdin.
 
 OPTIONS
+--delimiter / -d
+	Specify a delimiter (default: ",")
+
 --schema / -s
 	Provide a schema as text
 

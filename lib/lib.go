@@ -36,10 +36,10 @@ func ReadSchema(schema string) ([]Column, error) {
 	return columns, nil
 }
 
-func Convert(columns []Column, r io.Reader, w io.Writer) error {
+func Convert(columns []Column, r io.Reader, w io.Writer, delimiter string) error {
 	for i, column := range columns {
 		if i > 0 {
-			fmt.Fprint(w, ",")
+			fmt.Fprint(w, delimiter)
 		}
 		fmt.Fprint(w, column.Name)
 	}
@@ -55,7 +55,7 @@ func Convert(columns []Column, r io.Reader, w io.Writer) error {
 					return fmt.Errorf("Invalid column definition at index %d: N should be greater than %d in the previous column", i, columns[i-1].N)
 				}
 
-				fmt.Fprint(w, ",")
+				fmt.Fprint(w, delimiter)
 			}
 			b := min(column.N, len(line))
 			value := line[a:b]
@@ -69,11 +69,11 @@ func Convert(columns []Column, r io.Reader, w io.Writer) error {
 	return nil
 }
 
-func ConvertString(columns []Column, data string) (string, error) {
+func ConvertString(columns []Column, data string, delimiter string) (string, error) {
 	r := strings.NewReader(data)
 	var w bytes.Buffer
 
-	if err := Convert(columns, r, &w); err != nil {
+	if err := Convert(columns, r, &w, delimiter); err != nil {
 		return "", err
 	}
 

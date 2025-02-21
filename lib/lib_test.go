@@ -44,7 +44,7 @@ func TestReadSchema(t *testing.T) {
 	}
 }
 
-func TestConvert(t *testing.T) {
+func testConvertWithDelimiter(t *testing.T, delimiter string, csvFile string) {
 	columns := getTestColumns(t)
 
 	file := "../examples/data"
@@ -54,13 +54,12 @@ func TestConvert(t *testing.T) {
 	}
 
 	var w bytes.Buffer
-	if err := Convert(columns, data, &w); err != nil {
+	if err := Convert(columns, data, &w, delimiter); err != nil {
 		t.Fatal(err)
 	}
 
 	output := w.String()
 
-	csvFile := "../examples/data.csv"
 	csvBytes, err := os.ReadFile(csvFile)
 	if err != nil {
 		t.Fatalf("Failed to read %s: %s", csvFile, err)
@@ -72,4 +71,9 @@ func TestConvert(t *testing.T) {
 		fmt.Println(csv)
 		t.Error("Converted output and expected CSV do not match.")
 	}
+}
+
+func TestConvert(t *testing.T) {
+	testConvertWithDelimiter(t, ",", "../examples/data.csv")
+	testConvertWithDelimiter(t, "😂", "../examples/data.esv")
 }

@@ -43,6 +43,12 @@ func init() {
 		DefaultValue: "",
 		Shorthand:    "S",
 	})
+	gears.Add(&gears.Flag{
+		Name:         "delimiter",
+		ValueType:    "string",
+		DefaultValue: ",",
+		Shorthand:    "d",
+	})
 }
 
 func main() {
@@ -68,6 +74,11 @@ func main() {
 
 	schema := gears.StringValue("schema")
 	schemaFile := gears.StringValue("schema-file")
+	delimiter := gears.StringValue("delimiter")
+
+	if delimiter == "" {
+		log.Fatal("Delimiter must not be empty!")
+	}
 
 	if schema == "" && schemaFile == "" {
 		log.Fatal("Must specify either --schema or --schema-file")
@@ -102,7 +113,7 @@ func main() {
 		}
 	}
 
-	if err := lib.Convert(columns, input, os.Stdout); err != nil {
+	if err := lib.Convert(columns, input, os.Stdout, delimiter); err != nil {
 		log.Fatal(err)
 	}
 }

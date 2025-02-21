@@ -3,7 +3,6 @@ package main
 import (
 	_ "embed"
 	"fmt"
-	"io"
 	"log"
 	"os"
 
@@ -90,17 +89,17 @@ func main() {
 		log.Fatal(err)
 	}
 
-	var input io.Reader
+	var input *os.File
+	defer input.Close()
 
 	file := args[0]
 	if file == "-" {
 		input = os.Stdin
 	} else {
-		input, err := os.Open(file)
+		input, err = os.Open(file)
 		if err != nil {
 			log.Fatalf("Failed to open %s: %s", file, err)
 		}
-		defer input.Close()
 	}
 
 	if err := lib.Convert(columns, input, os.Stdout); err != nil {
